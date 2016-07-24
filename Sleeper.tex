@@ -1,0 +1,63 @@
+\documentclass [18pt] {article}
+
+\usepackage{setspace}
+\usepackage{graphicx}
+
+\begin{document}
+	\title {Sleeper}
+	\author{Filippo Colli - Pietro Andreoni}
+	\date{25.07.2016}
+	\maketitle
+	\begin{abstract}
+	Sleeper is a program that can figure out your sleep cycle analyzing the breath's frequency. It works completely in a non-invasive way; in fact it takes acoustic
+	signal from a microphone, and after a low-pass filter, it can isolate and recognize your breaths pattern.
+	This is a great way to take information of your sleep cycle, because every sleep-phase is characterized by a well-defined number of breath per minute.
+	After a brief introduction about sleep physiology and phases, in this report we will describe software, hardware and pseudo-code that we used in order to
+	complete the project.
+	\end{abstract}
+	\pagebreak
+	\section*{Physiology of sleep}
+	Sleep is a physiological condition of all humans that typically recurs for several hours every night, in which the nervous system is inactive, the eyes closed, the
+	postural muscles relaxed, and consciousness practically suspended, required to maintain health and proper function.
+	Despite a sleeping person may seem physically and mentally completely inactive, studies have proven that during sleep time occurs a complex brain
+	activity. According to the different characteristics of brain waves during different moments of sleep, it can be divided into two macro-areas:
+	\begin{itemize}
+	\item REM sleep: the REM sleep is characterized by a mixture of the encephalic state excitement and muscular immobility. The most known peculiarity of REM 
+	sleep is the rapid eyes movement from which the phase takes his name. It is the phase in which the most part of dreams occurs and in a physiological subject 
+	returns cyclically 3 or 4 times per sleep. REM sleep become more frequent and last longer into the final parts of the sleep. In this stadio vegetative functions are
+	less controlled. Breathing patterns in particular are characterized by an higher frequency (24-36 breath per minute) than NREM sleep or awake condition and by 
+	a great variability.
+	\item NREM sleep: the NREM sleep is characterized by low frequency and high amplitude brain waves, little or no eyes movement and not paralyzed muscular
+	activity. It can be divided into several further stages, but all of them are characterized by a very regular breath pattern, between 3 or 4 breath per minute.
+	\item awakeness or light-sleep:  during the night, especially after REM phases, the subject can experience brief moments of awakeness, in which breath
+	frequency is around 12-18 breath per minute.
+	\end{itemize}
+	\section*{Algorithm}
+	The algorithm is composed by two main stages. 
+	\subsection*{}
+	The first one, that we will call sampling phase, takes the signal from the microphone with a sampling rate of
+	10Hz. Then it is filtered by a low-pass filter with a cut-frequency of 2Hz and a gain of 2.0. We decided this configuration for several reasons: we chose an high 
+	sampling rate, despite the fact that the frequency information contained in breath event is fully described by lower harmonics frequencies, because it would 
+	easily allow in future to implement further functions requiring higher frequency contents. On the other hand the cut frequency of 2.0 Hz causes a loss of 
+	information about the shape of the respiratory event; in particular, we are not able to distinguish if the subject is snoring and, in general, to infer about differences 
+	and characteristics of a single breath event. Thou, this choice of filter simplified a lot the analysis of breathing frequency: in fact, as the filtered signal can 
+	be considered as a sine-like wave, the research of respiratory events became a simple maximum analysis. The stage we described so far repeats cyclically every 
+	60 seconds, and the only information we decided to maintain after the end of every cycle is the number of breaths. This way we were able to save a lot of static
+	memory if compared to an algorithm that saves the whole sampled signal.
+	\subsection*{} 
+	The second stage is not cyclically repeated, it activates after the end of the sleep (which is reported from subject changing a switch) and it analyzes the
+	information received from stage one, i.e. breathing frequencies of the whole sleep time.
+	In particular, we analyzed the different sleep stages occurred during the night, showing as output an hypnogram, which contains the information about sleep 
+	stages. Then we analyzed and selected informations about REM phases, the most significant of sleep phases in order to understand the health of sleep, 
+	showing duration and occurring time for each one.
+	
+	\begin{figure}
+    	 \centering
+    	 \includegraphics[scale=.6] {../../Downloads/sleeper_img.png}
+     	\caption{Pseudo-code of Sleeper}      
+	\end{figure}
+\end{document}
+
+	
+
+
